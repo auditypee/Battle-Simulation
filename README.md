@@ -1,8 +1,25 @@
 # Battle-Simulation
 Simulates a turn based battle in Unity. Much like the first few installments of the Final Fantasy Series. WIP
 
-## What I'm trying to achieve:
-### Functional Requirements
+## Table of Contents
+* [Purpose](#purpose)
+* [Technologies Used](#technologies-used)
+* [Setup](#setup)
+* [Functional Requirements](#functional-requirements)
+* [Pseudocode](#pseudocode)
+
+## Purpose
+Trying to utilize state machines, inheritance, some other good programming techniques
+
+Also wanted to learn about the UnityEngine
+
+## Technologies Used
+C#, Unity
+
+## Setup
+Working on it
+
+## Functional Requirements
 - Player and Ally exist
 - Enemies exist
 - User has options during battle through player and ally
@@ -21,7 +38,7 @@ Simulates a turn based battle in Unity. Much like the first few installments of 
     - Will end fight if roll success
 - Enemies can attack back
 
-### Pseudocode
+## Pseudocode
 ```
 Player turn
 • Choose attack option for Hero
