@@ -158,7 +158,7 @@ MonoBehaviour:
   ActionsContainer: {fileID: 1248908236}
   EnemySelectPanel: {fileID: 207985958}
   TargetSpacer: {fileID: 1811649681}
-  TargetButton: {fileID: 85290870974188283, guid: 5dbe83eb295169c46bdbcea6820971c3,
+  TargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
     type: 3}
 --- !u!4 &101909883
 Transform:
