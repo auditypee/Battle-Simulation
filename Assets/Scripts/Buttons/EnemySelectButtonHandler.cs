@@ -11,7 +11,7 @@ namespace Buttons
         {
             BattleManager _bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
             _bm.EnemySelectPanel.SetActive(false);
-
+            
             // TODO: - will have issues if there is more than one Player
             PlayerController playerController = GameObject.Find("Player").GetComponent<PlayerController>();
             playerController.TargetSelected(EnemyPrefab);

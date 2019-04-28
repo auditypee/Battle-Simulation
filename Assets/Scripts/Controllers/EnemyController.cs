@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Actors;
 using System.Linq;
+using UnityEngine.UI;
+using Buttons;
 
 namespace Controllers
 {
@@ -24,38 +26,20 @@ namespace Controllers
 
         public GameObject Selector;
 
-        [SerializeField] protected GameObject HealthBar;
-        protected HealthBar _healthBar;
-
         // Start is called before the first frame update
         protected override void Start()
         {
-            _bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-
-            CreateHealthBar();
-            _healthBar.SetSize((float)Enemy.HitPoints / Enemy.MaxHP);
-            
             Selector.SetActive(false);
 
             CurrentEnemyState = EnemyState.CHOOSEACTION;
 
-            _startPosition = transform.position;
-        }
-
-        protected virtual void CreateHealthBar()
-        {
-            GameObject healthBar = Instantiate(HealthBar) as GameObject;
-
-            healthBar.transform.SetParent(transform);
-            healthBar.transform.localPosition = new Vector2(0, .7f);
-
-            _healthBar = healthBar.GetComponent<HealthBar>();
+            base.Start();
         }
 
         // TODO: - shorten this to be more in line with PlayerController
         protected override void Update()
         {
-            _healthBar.SetSize((float)Enemy.HitPoints / Enemy.MaxHP);
+            _changeHealthBar.SetSize((float)Enemy.HitPoints / Enemy.MaxHP);
             if (Enemy.IsDead)
                 CurrentEnemyState = EnemyState.DEAD;
 
@@ -76,14 +60,24 @@ namespace Controllers
                     break;
 
                 case EnemyState.DEAD:
-                    gameObject.SetActive(false);
-                    _bm.PopTop();
+                    _bm.RemoveActorAction(gameObject);
                     _bm.EnemiesInBattle.Remove(gameObject);
+                    //_createdButton.SetActive(false);
+                    Destroy(gameObject);
                     _bm.CurrentBattleState = BattleManager.TurnState.TAKEACTIONS;
-                    enabled = false;
+                    //enabled = false;
 
                     break;
             }
+        }
+
+        protected override void CreateHealthBar()
+        {
+            GameObject healthBar = Instantiate(HealthBar) as GameObject;
+            _changeHealthBar = healthBar.GetComponent<HealthBar>();
+
+            healthBar.transform.SetParent(transform);
+            healthBar.transform.localPosition = new Vector2(0, .7f);
         }
 
         public override void TargetSelected(GameObject obj)
@@ -119,7 +113,7 @@ namespace Controllers
             while (MoveTowardsTarget(_startPosition))
                 yield return null;
 
-            // remove action from list
+            // remove this action from list
             _bm.PopTop();
             _bm.CurrentBattleState = BattleManager.TurnState.TAKEACTIONS;
 
@@ -130,7 +124,6 @@ namespace Controllers
             else
                 CurrentEnemyState = EnemyState.WAIT;
         }
-        
         protected override void EngageTarget(GameObject target)
         {
             Player player = target.GetComponent<PlayerController>().Player;

@@ -109,6 +109,8 @@ MonoBehaviour:
     _speed: 0
   PlayerToAttack: {fileID: 0}
   Selector: {fileID: 9090377617887771724}
+  TargetButton: {fileID: 85290870974188283, guid: 5dbe83eb295169c46bdbcea6820971c3,
+    type: 3}
 --- !u!1 &9090377617887771724
 GameObject:
   m_ObjectHideFlags: 0

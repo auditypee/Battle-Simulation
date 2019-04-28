@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Actors;
 using System.Linq;
+using UnityEngine.EventSystems;
+using Buttons;
 
 namespace Controllers
 {
@@ -17,28 +19,22 @@ namespace Controllers
         }
 
         public PlayerState CurrentPlayerState;
-        
+
         public Player Player;
-        
+
         public GameObject EnemyToAttack;
 
-        public GameObject HealthBar;
-        private HealthBar _changeHealthBar;
-
+        public bool FinishedTurn = false;
+        
         // Start is called before the first frame update
         protected override void Start()
         {
             Player = new Player("Venet");
-            _bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-
-            _changeHealthBar = HealthBar.GetComponent<HealthBar>();
-            
-
             CurrentPlayerState = PlayerState.SELECTING;
 
-            _startPosition = transform.position;
+            base.Start();
         }
-        
+
 
         // Update is called once per frame
         protected override void Update()
@@ -50,12 +46,10 @@ namespace Controllers
             switch (CurrentPlayerState)
             {
                 case PlayerState.SELECTING:
-                    
                     break;
 
                 case PlayerState.WAIT:
                     // wait for all actions to complete
-                    
                     break;
 
                 case PlayerState.ACTION:
@@ -65,14 +59,23 @@ namespace Controllers
                 case PlayerState.DEAD:
                     gameObject.SetActive(false);
                     _bm.PopTop();
-                    _bm.ActionsContainer.SetActive(false);
+
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
 
                     _bm.CurrentBattleState = BattleManager.TurnState.GAMEOVER;
-                    enabled = false;
                     break;
             }
         }
+        
+        protected override void CreateHealthBar()
+        {
+            
+            //GameObject healthBar = Instantiate(HealthBar) as GameObject;
+            _changeHealthBar = HealthBar.GetComponent<HealthBar>();
 
+            //healthBar.transform.SetParent(GameObject.Find("ActionUIBG").transform);
+        }
+        
         // called from EnemySelectButtonHandler to create an action
         public override void TargetSelected(GameObject target)
         {
@@ -85,11 +88,13 @@ namespace Controllers
             };
 
             _bm.CollectAction(action);
+            FinishedTurn = true;
             CurrentPlayerState = PlayerState.WAIT;
         }
 
         protected override IEnumerator TimeForAction()
         {
+            FinishedTurn = false;
             if (_actionStarted)
                 yield break;
 
@@ -127,6 +132,5 @@ namespace Controllers
             enemy.TakeDamage(damage);
         }
     }
-
 }
 
