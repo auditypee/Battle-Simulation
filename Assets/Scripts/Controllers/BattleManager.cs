@@ -11,18 +11,21 @@ namespace Controllers
     {
         public enum TurnState
         {
-            WAITFORACTIONS,
+            PLAYERTURN,
+            ALLYTURN,
+            ENEMYTURN,
+            RESOLVETURNORDER,
             TAKEACTIONS,
             PERFORMACTION,
-            GAMEOVER
+            GAMEOVER,
+            ENDBATTLE
         }
 
         public TurnState CurrentBattleState;
 
-        public static BattleManager instance = null; // allows static call of the BattleManager
-
-        public List<GameObject> EnemiesInBattle = new List<GameObject>();
-        public List<GameObject> PlayersInBattle = new List<GameObject>();
+        private GameObject _player;
+        private GameObject _ally;
+        private List<GameObject> _enemies = new List<GameObject>();
 
         [SerializeField] private List<HandleTurn> _listOfActions = new List<HandleTurn>();
         public List<HandleTurn> ListOfActions
@@ -31,74 +34,58 @@ namespace Controllers
             private set { }
         }
 
-        public GameObject EnemyToCreate;
-
         public GameObject ActionsContainer;
         public GameObject EnemySelectPanel;
         public Transform TargetSpacer;
         public GameObject TargetButton;
-        
-        private static Vector2 _position1;
-        private static Vector2 _position2;
-        private static Vector2 _position3;
+
+        private BattleGround battleGround;
 
         private void Awake()
         {
-            if (instance == null)
-                instance = this;
-            else if (instance != this)
-                Destroy(gameObject);
-        }
+            battleGround = GetComponent<BattleGround>();
+            battleGround.SetupScene();
 
-        private void InitPositions()
-        {
-            Vector2 bottomLeftOfScreen = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
-            Vector2 topRightOfScreen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-            _position1 = new Vector2(topRightOfScreen.x - 1f, topRightOfScreen.y - 1.5f);
-            _position1 -= Vector2.right * transform.localScale.x;
-            _position2 = new Vector2(topRightOfScreen.x - 1f, 0);
-            _position2 -= Vector2.right * transform.localScale.x;
+            _player = battleGround.Player;
+            _ally = battleGround.Ally;
+            _enemies = battleGround.Enemies;
         }
 
         void Start()
         {
-            InitPositions();
-
-            
-            PlayersInBattle.AddRange(GameObject.FindGameObjectsWithTag("Player"));
-
-            CurrentBattleState = TurnState.WAITFORACTIONS;
+            CurrentBattleState = TurnState.PLAYERTURN;
 
             EnemySelectPanel.SetActive(false);
-
-            CreateEnemy(new Enemy("Slime", 2, 5, 5, 5, 6, 3, 3), _position1);
-            CreateEnemy(new Enemy("Orc", 5, 15, 20, 20, 1, 10, 10), _position2);
         }
         
         void Update()
         {
             switch (CurrentBattleState)
             {
-                case TurnState.WAITFORACTIONS:
+                case TurnState.PLAYERTURN:
                     ActionsContainer.SetActive(true);
+                    _player.GetComponent<PlayerController>().CurrentPlayerState = PlayerController.PlayerState.SELECTING;
                     
-                    int numOfActors = EnemiesInBattle.Count + PlayersInBattle.Count;
-
-                    // everyone created an action
-                    if (_listOfActions.Count >= numOfActors)
-                    {
-                        CurrentBattleState = TurnState.TAKEACTIONS;
-                        ActionsContainer.SetActive(false);
-                    }
-
+                    if (_player.GetComponent<PlayerController>().TurnFinished)
+                        CurrentBattleState = TurnState.ALLYTURN;
                     break;
 
-                // TODO: - could code this better
-                case TurnState.TAKEACTIONS: // should stay in this state until all actions have been used
-                                            // if all actions are depleted, go wait for more actions
+                case TurnState.ALLYTURN:
+
+                    CurrentBattleState = TurnState.ENEMYTURN;
+                    break;
+                case TurnState.ENEMYTURN:
+                    foreach (var enemy in _enemies)
+                        enemy.GetComponent<EnemyController>().CurrentEnemyState = EnemyController.EnemyState.CHOOSEACTION;
+                    //new WaitForSeconds(3f);
+                    CurrentBattleState = TurnState.RESOLVETURNORDER;
+                    break;
+
+                case TurnState.RESOLVETURNORDER:
+                    ActionsContainer.SetActive(false);
+
                     if (!_listOfActions.Any())
-                        CurrentBattleState = TurnState.WAITFORACTIONS;
-                    // keep using up actions
+                        CurrentBattleState = TurnState.PLAYERTURN;
                     else
                     {
                         TakeActions();
@@ -107,9 +94,19 @@ namespace Controllers
                     break;
 
                 case TurnState.PERFORMACTION:
+                    CurrentBattleState = TurnState.RESOLVETURNORDER;
+                    if (AllPlayersDead())
+                        CurrentBattleState = TurnState.GAMEOVER;
+                    if (AllEnemiesDead())
+                        CurrentBattleState = TurnState.ENDBATTLE;
+                    break;
+
+                case TurnState.ENDBATTLE:
+                    Debug.Log("A winner is you!");
                     break;
 
                 case TurnState.GAMEOVER:
+                    Debug.Log("Game Over");
                     break;
             }
         }
@@ -122,6 +119,7 @@ namespace Controllers
 
             if (currentActor.AttackerTag == "Player")
                 PlayerDoesAction(currentActor);
+            
         }
 
         private static void EnemyDoesAction(HandleTurn currentActor)
@@ -137,29 +135,12 @@ namespace Controllers
             currentPlayer.CurrentPlayerState = PlayerController.PlayerState.ACTION;
             currentPlayer.EnemyToAttack = currentActor.Target;
         }
-
-        public void EnemySelected(GameObject target)
-        {
-            Debug.Log(target.GetComponent<EnemyController>().Enemy.Name);
-        }
-
-        private void CreateEnemy(Enemy enemy, Vector2 position)
-        {
-            GameObject newEnemy = Instantiate(EnemyToCreate) as GameObject;
-
-            // position of enemy
-            newEnemy.transform.position = position;
-            // values of the enemy
-            newEnemy.GetComponent<EnemyController>().Enemy = enemy;
-            EnemiesInBattle.Add(newEnemy);
-        }
-        
         
         public void CreateEnemyButtons()
         {
             foreach (Transform child in TargetSpacer)
                 Destroy(child.gameObject);
-            foreach (GameObject enemy in EnemiesInBattle)
+            foreach (GameObject enemy in _enemies)
             {
                 // create buttons that contain the data for every enemy in the battle
                 GameObject newButton = Instantiate(TargetButton) as GameObject;
@@ -173,6 +154,7 @@ namespace Controllers
             }
         }
         
+
 
         // collects actions from actors and sorts by speed
         public void CollectAction(HandleTurn action)
@@ -191,6 +173,46 @@ namespace Controllers
         public void PopTop()
         {
             _listOfActions.RemoveAt(0);
+        }
+
+        public bool AllPlayersDead()
+        {
+            //_ally.GetComponent<AllyController>().Ally.IsDead;
+            return _player.GetComponent<PlayerController>().Player.IsDead;
+        }
+
+        public bool AllEnemiesDead()
+        {
+            return !_enemies.Any();
+        }
+
+        public int NumOfActors()
+        {
+            int num = _enemies.Count;
+            if (_player != null)
+                num++;
+            if (_ally != null)
+                num++;
+
+            return num;
+        }
+
+        public void RemoveEnemy(GameObject enemy)
+        {
+            _enemies.Remove(enemy);
+        }
+
+        public GameObject GetPlayer()
+        {
+            return _player;
+        }
+
+        public GameObject GetRandPlayer()
+        {
+            if (Random.Range(0, 2) == 0)
+                return !_player.GetComponent<PlayerController>().Player.IsDead ? _player : _ally; // if player isn't dead
+            else
+                return !_ally.GetComponent<AllyController>().Ally.IsDead ? _ally : _player; // if ally isn't dead
         }
     }
 }

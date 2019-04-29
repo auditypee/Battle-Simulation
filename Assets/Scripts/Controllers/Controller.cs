@@ -11,7 +11,9 @@ namespace Controllers
 {
     public abstract class Controller : MonoBehaviour
     {
-        // will make a reference to the main BattleManager
+        // TODO: - remove BattleManager
+        // BattleManager should be able to talk to each other controllers
+        // Controllers shouldn't know BattleManager exists
         protected BattleManager _bm;
 
         protected Vector2 _startPosition;

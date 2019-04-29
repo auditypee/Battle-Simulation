@@ -204,6 +204,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210d8fd7ed2047442a1c052f919ef5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetSelected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7862092096227162127, guid: 5ed11a5aa80ec2844a7bba128959307f,
+          type: 3}
+        m_MethodName: TargetSelected
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1870240465419655090, guid: 0d5d5944b80e08244aed9508ec694d47,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   EnemyPrefab: {fileID: 0}
 --- !u!114 &1542083426045739956
 MonoBehaviour:

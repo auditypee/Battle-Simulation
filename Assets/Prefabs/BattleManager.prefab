@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5428333033685256439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5428333033685256437}
+  - component: {fileID: 5428333033685256436}
+  - component: {fileID: 5428333033685256434}
+  m_Layer: 0
+  m_Name: BattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5428333033685256437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5428333033685256439}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.1916556, y: 0.13866834, z: -1.0371094}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5428333033685256436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5428333033685256439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7e4e975611dd4d89dff71b3fd4c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentBattleState: 0
+  _listOfActions: []
+  ActionsContainer: {fileID: 0}
+  EnemySelectPanel: {fileID: 0}
+  TargetSpacer: {fileID: 0}
+  TargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
+    type: 3}
+--- !u!114 &5428333033685256434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5428333033685256439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4a8516f3ed7804ca54460c81e08e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InstPlayer: {fileID: 7862092096227162124, guid: 5ed11a5aa80ec2844a7bba128959307f,
+    type: 3}
+  InstAlly: {fileID: 3685766696469686481, guid: c4fcd8dd86fd8174c893f3296c5cc630,
+    type: 3}
+  InstEnemy: {fileID: 1870240465419655090, guid: 0d5d5944b80e08244aed9508ec694d47,
+    type: 3}
+  Player: {fileID: 0}
+  Ally: {fileID: 0}
+  Enemies: []

@@ -7,9 +7,10 @@ Simulates a turn based battle in Unity. Much like the first few installments of 
 * [Setup](#setup)
 * [Functional Requirements](#functional-requirements)
 * [Pseudocode](#pseudocode)
+* [State Machine Idea] (#state-machine-idea)
 
 ## Purpose
-Trying to utilize state machines, inheritance, some other good programming techniques
+Trying to utilize state machines, inheritance, SOLID design principles
 
 Also wanted to learn about the UnityEngine
 
@@ -98,3 +99,6 @@ Check deaths
 	○ Player can revive if able
 Repeat
 ```
+
+## State Machine Idea
+<img src="images/StateMachineIdea.png" width=300>

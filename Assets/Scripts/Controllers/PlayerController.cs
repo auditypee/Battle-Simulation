@@ -23,14 +23,14 @@ namespace Controllers
         public Player Player;
 
         public GameObject EnemyToAttack;
-
-        public bool FinishedTurn = false;
         
+
+        public bool TurnFinished = false;
+
         // Start is called before the first frame update
         protected override void Start()
         {
-            Player = new Player("Venet");
-            CurrentPlayerState = PlayerState.SELECTING;
+            CurrentPlayerState = PlayerState.WAIT;
 
             base.Start();
         }
@@ -53,27 +53,32 @@ namespace Controllers
                     break;
 
                 case PlayerState.ACTION:
-                    StartCoroutine(TimeForAction());
-                    break;
-                    //
-                case PlayerState.DEAD:
-                    gameObject.SetActive(false);
-                    _bm.PopTop();
+                    if (EnemyToAttack == null)
+                        CurrentPlayerState = PlayerState.SELECTING;
+                    else
+                        StartCoroutine(TimeForAction());
 
+                    TurnFinished = false;
+                    break;
+
+                case PlayerState.DEAD:
+                    //gameObject.SetActive(false);
+                    _bm.RemoveActorAction(gameObject);
+                    //_bm.PlayersInBattle.Remove(gameObject);
                     gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
 
                     _bm.CurrentBattleState = BattleManager.TurnState.GAMEOVER;
                     break;
             }
         }
-        
+
         protected override void CreateHealthBar()
         {
             
-            //GameObject healthBar = Instantiate(HealthBar) as GameObject;
-            _changeHealthBar = HealthBar.GetComponent<HealthBar>();
+            GameObject healthBar = Instantiate(HealthBar) as GameObject;
+            _changeHealthBar = healthBar.GetComponent<HealthBar>();
 
-            //healthBar.transform.SetParent(GameObject.Find("ActionUIBG").transform);
+            healthBar.transform.SetParent(GameObject.Find("ActionUIBG").transform, false);
         }
         
         // called from EnemySelectButtonHandler to create an action
@@ -88,13 +93,12 @@ namespace Controllers
             };
 
             _bm.CollectAction(action);
-            FinishedTurn = true;
             CurrentPlayerState = PlayerState.WAIT;
+            TurnFinished = true;
         }
 
         protected override IEnumerator TimeForAction()
         {
-            FinishedTurn = false;
             if (_actionStarted)
                 yield break;
 
@@ -114,7 +118,6 @@ namespace Controllers
 
             // remove action from list
             _bm.PopTop();
-            _bm.CurrentBattleState = BattleManager.TurnState.TAKEACTIONS;
 
             _actionStarted = false;
 
@@ -130,6 +133,16 @@ namespace Controllers
 
             int damage = CalculateDamage(Player, enemy);
             enemy.TakeDamage(damage);
+        }
+
+        private void OnEnable()
+        {
+            EnemySelectButtonHandler.OnClickedTarget += TargetSelected;
+        }
+
+        private void OnDisable()
+        {
+            EnemySelectButtonHandler.OnClickedTarget -= TargetSelected;
         }
     }
 }

@@ -26,12 +26,14 @@ namespace Controllers
 
         public GameObject Selector;
 
+        public bool TurnFinished = false;
+
         // Start is called before the first frame update
         protected override void Start()
         {
             Selector.SetActive(false);
 
-            CurrentEnemyState = EnemyState.CHOOSEACTION;
+            CurrentEnemyState = EnemyState.WAIT;
 
             base.Start();
         }
@@ -46,27 +48,31 @@ namespace Controllers
             switch (CurrentEnemyState)
             {
                 case EnemyState.CHOOSEACTION:
-                    TargetSelected(null);
+                    if (!_bm.AllPlayersDead())
+                        TargetSelected(null);
                     break;
 
                 case EnemyState.WAIT:
                     // wait for all actions to complete
-                    if (!_bm.ListOfActions.Any())
-                        CurrentEnemyState = EnemyState.CHOOSEACTION;
+                    //if (!_bm.ListOfActions.Any())
+                    //    CurrentEnemyState = EnemyState.CHOOSEACTION;
                     break;
 
                 case EnemyState.ACTION:
-                    StartCoroutine(TimeForAction());
+                    if (PlayerToAttack == null)
+                        CurrentEnemyState = EnemyState.CHOOSEACTION;
+                    else
+                        StartCoroutine(TimeForAction());
+
+                    TurnFinished = false;
                     break;
 
                 case EnemyState.DEAD:
                     _bm.RemoveActorAction(gameObject);
-                    _bm.EnemiesInBattle.Remove(gameObject);
-                    //_createdButton.SetActive(false);
+                    _bm.RemoveEnemy(gameObject);
                     Destroy(gameObject);
-                    _bm.CurrentBattleState = BattleManager.TurnState.TAKEACTIONS;
-                    //enabled = false;
 
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
                     break;
             }
         }
@@ -87,11 +93,12 @@ namespace Controllers
                 Attacker = gameObject,
                 AttackerSPD = Enemy.Speed,
                 AttackerTag = "Enemy",
-                Target = _bm.PlayersInBattle[Random.Range(0, _bm.PlayersInBattle.Count)]
+                Target = _bm.GetPlayer()
             };
 
             _bm.CollectAction(action);
             CurrentEnemyState = EnemyState.WAIT;
+            TurnFinished = true;
         }
 
         protected override IEnumerator TimeForAction()
@@ -115,7 +122,6 @@ namespace Controllers
 
             // remove this action from list
             _bm.PopTop();
-            _bm.CurrentBattleState = BattleManager.TurnState.TAKEACTIONS;
 
             _actionStarted = false;
 
@@ -124,6 +130,7 @@ namespace Controllers
             else
                 CurrentEnemyState = EnemyState.WAIT;
         }
+
         protected override void EngageTarget(GameObject target)
         {
             Player player = target.GetComponent<PlayerController>().Player;
