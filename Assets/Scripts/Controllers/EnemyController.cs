@@ -33,7 +33,7 @@ namespace Controllers
         {
             Selector.SetActive(false);
 
-            CurrentEnemyState = EnemyState.WAIT;
+            CurrentEnemyState = EnemyState.CHOOSEACTION;
 
             base.Start();
         }
@@ -48,14 +48,11 @@ namespace Controllers
             switch (CurrentEnemyState)
             {
                 case EnemyState.CHOOSEACTION:
-                    if (!_bm.AllPlayersDead())
-                        TargetSelected(null);
+
                     break;
 
                 case EnemyState.WAIT:
-                    // wait for all actions to complete
-                    //if (!_bm.ListOfActions.Any())
-                    //    CurrentEnemyState = EnemyState.CHOOSEACTION;
+
                     break;
 
                 case EnemyState.ACTION:
@@ -71,8 +68,6 @@ namespace Controllers
                     _bm.RemoveActorAction(gameObject);
                     _bm.RemoveEnemy(gameObject);
                     Destroy(gameObject);
-
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
                     break;
             }
         }
@@ -84,21 +79,6 @@ namespace Controllers
 
             healthBar.transform.SetParent(transform);
             healthBar.transform.localPosition = new Vector2(0, .7f);
-        }
-
-        public override void TargetSelected(GameObject obj)
-        {
-            HandleTurn action = new HandleTurn
-            {
-                Attacker = gameObject,
-                AttackerSPD = Enemy.Speed,
-                AttackerTag = "Enemy",
-                Target = _bm.GetPlayer()
-            };
-
-            _bm.CollectAction(action);
-            CurrentEnemyState = EnemyState.WAIT;
-            TurnFinished = true;
         }
 
         protected override IEnumerator TimeForAction()

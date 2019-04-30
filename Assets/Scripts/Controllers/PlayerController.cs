@@ -24,19 +24,13 @@ namespace Controllers
 
         public GameObject EnemyToAttack;
         
-
-        public bool TurnFinished = false;
-
-        // Start is called before the first frame update
         protected override void Start()
         {
-            CurrentPlayerState = PlayerState.WAIT;
+            CurrentPlayerState = PlayerState.SELECTING;
 
             base.Start();
         }
-
-
-        // Update is called once per frame
+        
         protected override void Update()
         {
             _changeHealthBar.SetSize((float)Player.HitPoints / Player.MaxHP);
@@ -57,46 +51,24 @@ namespace Controllers
                         CurrentPlayerState = PlayerState.SELECTING;
                     else
                         StartCoroutine(TimeForAction());
-
-                    TurnFinished = false;
+                    
                     break;
 
                 case PlayerState.DEAD:
-                    //gameObject.SetActive(false);
                     _bm.RemoveActorAction(gameObject);
-                    //_bm.PlayersInBattle.Remove(gameObject);
                     gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-
-                    _bm.CurrentBattleState = BattleManager.TurnState.GAMEOVER;
                     break;
             }
         }
 
         protected override void CreateHealthBar()
         {
-            
             GameObject healthBar = Instantiate(HealthBar) as GameObject;
             _changeHealthBar = healthBar.GetComponent<HealthBar>();
 
             healthBar.transform.SetParent(GameObject.Find("ActionUIBG").transform, false);
         }
         
-        // called from EnemySelectButtonHandler to create an action
-        public override void TargetSelected(GameObject target)
-        {
-            HandleTurn action = new HandleTurn
-            {
-                Attacker = gameObject,
-                AttackerTag = "Player",
-                AttackerSPD = Player.Speed,
-                Target = target
-            };
-
-            _bm.CollectAction(action);
-            CurrentPlayerState = PlayerState.WAIT;
-            TurnFinished = true;
-        }
-
         protected override IEnumerator TimeForAction()
         {
             if (_actionStarted)
@@ -133,16 +105,6 @@ namespace Controllers
 
             int damage = CalculateDamage(Player, enemy);
             enemy.TakeDamage(damage);
-        }
-
-        private void OnEnable()
-        {
-            EnemySelectButtonHandler.OnClickedTarget += TargetSelected;
-        }
-
-        private void OnDisable()
-        {
-            EnemySelectButtonHandler.OnClickedTarget -= TargetSelected;
         }
     }
 }

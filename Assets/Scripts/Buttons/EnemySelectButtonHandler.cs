@@ -13,9 +13,6 @@ namespace Buttons
 
         public void OnClick_TargetSelect()
         {
-            BattleManager _bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-            _bm.EnemySelectPanel.SetActive(false);
-            
             OnClickedTarget?.Invoke(EnemyPrefab);
         }
 

@@ -4,43 +4,47 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Actors;
+using States;
 
 namespace Controllers
 {
     public class BattleManager : MonoBehaviour
     {
-        public enum TurnState
-        {
-            PLAYERTURN,
-            ALLYTURN,
-            ENEMYTURN,
-            RESOLVETURNORDER,
-            TAKEACTIONS,
-            PERFORMACTION,
-            GAMEOVER,
-            ENDBATTLE
-        }
+        [SerializeField] private List<HandleTurn> _listOfActions = new List<HandleTurn>();
 
-        public TurnState CurrentBattleState;
+        private BattleGround battleGround;
 
         private GameObject _player;
         private GameObject _ally;
-        private List<GameObject> _enemies = new List<GameObject>();
+        private List<GameObject> _enemies;
 
-        [SerializeField] private List<HandleTurn> _listOfActions = new List<HandleTurn>();
+        public GameObject Player
+        {
+            get { return _player; }
+            private set { }
+        }
+        public GameObject Ally
+        {
+            get { return _ally; }
+            private set { }
+        }
+        public List<GameObject> Enemies
+        {
+            get { return _enemies; }
+            private set { }
+        }
         public List<HandleTurn> ListOfActions
         {
             get { return _listOfActions; }
             private set { }
         }
+        public StateMachine CurrentBattleState = new StateMachine();
 
         public GameObject ActionsContainer;
         public GameObject EnemySelectPanel;
         public Transform TargetSpacer;
         public GameObject TargetButton;
-
-        private BattleGround battleGround;
-
+        
         private void Awake()
         {
             battleGround = GetComponent<BattleGround>();
@@ -51,89 +55,15 @@ namespace Controllers
             _enemies = battleGround.Enemies;
         }
 
-        void Start()
+        private void Start()
         {
-            CurrentBattleState = TurnState.PLAYERTURN;
-
             EnemySelectPanel.SetActive(false);
+            CurrentBattleState.ChangeState(new PlayerTurnState(this));
         }
         
-        void Update()
+        private void Update()
         {
-            switch (CurrentBattleState)
-            {
-                case TurnState.PLAYERTURN:
-                    ActionsContainer.SetActive(true);
-                    _player.GetComponent<PlayerController>().CurrentPlayerState = PlayerController.PlayerState.SELECTING;
-                    
-                    if (_player.GetComponent<PlayerController>().TurnFinished)
-                        CurrentBattleState = TurnState.ALLYTURN;
-                    break;
-
-                case TurnState.ALLYTURN:
-
-                    CurrentBattleState = TurnState.ENEMYTURN;
-                    break;
-                case TurnState.ENEMYTURN:
-                    foreach (var enemy in _enemies)
-                        enemy.GetComponent<EnemyController>().CurrentEnemyState = EnemyController.EnemyState.CHOOSEACTION;
-                    //new WaitForSeconds(3f);
-                    CurrentBattleState = TurnState.RESOLVETURNORDER;
-                    break;
-
-                case TurnState.RESOLVETURNORDER:
-                    ActionsContainer.SetActive(false);
-
-                    if (!_listOfActions.Any())
-                        CurrentBattleState = TurnState.PLAYERTURN;
-                    else
-                    {
-                        TakeActions();
-                        CurrentBattleState = TurnState.PERFORMACTION;
-                    }
-                    break;
-
-                case TurnState.PERFORMACTION:
-                    CurrentBattleState = TurnState.RESOLVETURNORDER;
-                    if (AllPlayersDead())
-                        CurrentBattleState = TurnState.GAMEOVER;
-                    if (AllEnemiesDead())
-                        CurrentBattleState = TurnState.ENDBATTLE;
-                    break;
-
-                case TurnState.ENDBATTLE:
-                    Debug.Log("A winner is you!");
-                    break;
-
-                case TurnState.GAMEOVER:
-                    Debug.Log("Game Over");
-                    break;
-            }
-        }
-
-        private void TakeActions()
-        {
-            HandleTurn currentActor = _listOfActions.First();
-            if (currentActor.AttackerTag == "Enemy")
-                EnemyDoesAction(currentActor);
-
-            if (currentActor.AttackerTag == "Player")
-                PlayerDoesAction(currentActor);
-            
-        }
-
-        private static void EnemyDoesAction(HandleTurn currentActor)
-        {
-            EnemyController currentEnemy = currentActor.Attacker.GetComponent<EnemyController>();
-            currentEnemy.CurrentEnemyState = EnemyController.EnemyState.ACTION;
-            currentEnemy.PlayerToAttack = currentActor.Target;
-        }
-
-        private static void PlayerDoesAction(HandleTurn currentActor)
-        {
-            PlayerController currentPlayer = currentActor.Attacker.GetComponent<PlayerController>();
-            currentPlayer.CurrentPlayerState = PlayerController.PlayerState.ACTION;
-            currentPlayer.EnemyToAttack = currentActor.Target;
+            CurrentBattleState.Update();
         }
         
         public void CreateEnemyButtons()
@@ -154,7 +84,6 @@ namespace Controllers
             }
         }
         
-
 
         // collects actions from actors and sorts by speed
         public void CollectAction(HandleTurn action)
@@ -183,12 +112,12 @@ namespace Controllers
 
         public bool AllEnemiesDead()
         {
-            return !_enemies.Any();
+            return !Enemies.Any();
         }
 
         public int NumOfActors()
         {
-            int num = _enemies.Count;
+            int num = Enemies.Count;
             if (_player != null)
                 num++;
             if (_ally != null)

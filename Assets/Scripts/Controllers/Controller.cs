@@ -38,9 +38,6 @@ namespace Controllers
         // update for the state machine
         protected abstract void Update();
 
-        // handles which target is selected
-        public abstract void TargetSelected(GameObject target);
-
         // determines how the object will move towards its target
         protected abstract IEnumerator TimeForAction();
         // movement of the object towards the target

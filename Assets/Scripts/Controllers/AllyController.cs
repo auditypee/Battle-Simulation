@@ -11,6 +11,14 @@ namespace Controllers
 {
     public class AllyController : Controller
     {
+        public enum AllyState
+        {
+            SELECTING,
+            WAIT,
+            ACTION,
+            DEAD
+        }
+
         public Ally Ally;
 
         protected override void Start()
@@ -23,11 +31,7 @@ namespace Controllers
         {
             
         }
-
-        public override void TargetSelected(GameObject target)
-        {
-            
-        }
+        
 
         protected override void CreateHealthBar()
         {
