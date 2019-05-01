@@ -7,7 +7,7 @@ namespace Buttons
     {
         public void OnClick_ShowEnemySelection()
         {
-            BattleManager bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+            BattleManager bm = BattleManager.instance;
             bm.EnemySelectPanel.SetActive(!bm.EnemySelectPanel.activeSelf);
             bm.CreateEnemyButtons();
         }

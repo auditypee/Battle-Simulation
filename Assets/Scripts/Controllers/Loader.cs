@@ -9,6 +9,12 @@ namespace Controllers
 {
     public class Loader : MonoBehaviour
     {
+        public GameObject battleManager;
 
+        private void Awake()
+        {
+            if (BattleManager.instance == null)
+                Instantiate(battleManager);
+        }
     }
 }

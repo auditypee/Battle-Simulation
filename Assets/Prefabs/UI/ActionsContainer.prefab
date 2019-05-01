@@ -259,7 +259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8731320468551208280
 RectTransform:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8731320468551208281}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 8731320469890637755}
   - component: {fileID: 8731320469890637752}
   - component: {fileID: 8731320469890637753}
-  - component: {fileID: 8731320469890637754}
+  - component: {fileID: 495632687}
   m_Layer: 5
   m_Name: AttackButton
   m_TagString: Untagged
@@ -877,7 +877,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8731320469890637754}
+      - m_Target: {fileID: 495632687}
         m_MethodName: OnClick_ShowEnemySelection
         m_Mode: 1
         m_Arguments:
@@ -890,7 +890,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &8731320469890637754
+--- !u!114 &495632687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

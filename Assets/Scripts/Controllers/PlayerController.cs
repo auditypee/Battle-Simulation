@@ -55,7 +55,7 @@ namespace Controllers
                     break;
 
                 case PlayerState.DEAD:
-                    _bm.RemoveActorAction(gameObject);
+                    //_bm.RemoveActorAction(gameObject);
                     gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
                     break;
             }

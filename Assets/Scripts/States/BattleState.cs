@@ -174,6 +174,7 @@ namespace States
         public override void Enter()
         {
             _owner.ActionsContainer.SetActive(false);
+            
         }
 
         public override void Execute()
@@ -183,7 +184,7 @@ namespace States
 
             else
             {
-                TakeActions();
+            TakeActions();
                 _currentBattleState.ChangeState(new PerformActionState(_owner));
             }
         }
@@ -240,6 +241,11 @@ namespace States
 
             if (_owner.AllPlayersDead())
                 _currentBattleState.ChangeState(new GameOverState(_owner));
+        }
+
+        public override void Exit()
+        {
+            //_owner.PopTop();
         }
     }
 

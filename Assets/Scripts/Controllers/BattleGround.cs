@@ -12,7 +12,7 @@ namespace Controllers
     {
         private static Vector2 _position1r;
         private static Vector2 _position2r;
-        private static Vector2 _position3;
+        private static Vector2 _position3r;
         private static Vector2 _position1l;
         private static Vector2 _position2l;
 
@@ -30,8 +30,10 @@ namespace Controllers
             Vector2 topRightOfScreen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
             _position1r = new Vector2(topRightOfScreen.x - 1f, topRightOfScreen.y - 1.5f);
             _position1r -= Vector2.right * transform.localScale.x;
-            _position2r = new Vector2(topRightOfScreen.x - 1f, 0);
+            _position2r = new Vector2(topRightOfScreen.x - 1f, 1.5f);
             _position2r -= Vector2.right * transform.localScale.x;
+            _position3r = new Vector2(topRightOfScreen.x - 1f, -1.5f);
+            _position3r -= Vector2.right * transform.localScale.x;
 
             _position1l = new Vector2(bottomLeftOfScreen.x + 1f, topRightOfScreen.y - 1.5f);
             _position1l -= Vector2.left * transform.localScale.x;
@@ -78,6 +80,7 @@ namespace Controllers
             //CreateAlly(new Ally("Ally"), _position2l);
             CreateEnemy(new Enemy("Slime", 2, 5, 5, 5, 6, 3, 3), _position1r);
             CreateEnemy(new Enemy("Orc", 5, 15, 8, 10, 1, 10, 10), _position2r);
+            CreateEnemy(new Enemy("Weakling", 1, 1, 1, 1, 1, 1, 1), _position3r);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Controllers
         private GameObject _ally;
         private List<GameObject> _enemies;
 
+        public static BattleManager instance = null;
+
         public GameObject Player
         {
             get { return _player; }
@@ -47,12 +49,21 @@ namespace Controllers
         
         private void Awake()
         {
+            if (instance == null)
+                instance = this;
+            else if (instance != this)
+                Destroy(gameObject);
+
+            //DontDestroyOnLoad(gameObject);
+
             battleGround = GetComponent<BattleGround>();
             battleGround.SetupScene();
 
             _player = battleGround.Player;
             _ally = battleGround.Ally;
             _enemies = battleGround.Enemies;
+
+            //TargetSpacer = EnemySelectPanel.transform.Find("TargetSpacer");
         }
 
         private void Start()
