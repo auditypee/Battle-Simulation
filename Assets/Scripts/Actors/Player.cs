@@ -16,6 +16,7 @@ namespace Actors
         public void CheckLevelUp(int gainedExperience)
         {
             GainExperience(gainedExperience);
+            // how many times to level up
             int n = (int)Math.Round(Math.Pow(Experience, (double)1 / 3));
 
             for (int i = n - Level; i <= n; i++)
@@ -27,6 +28,11 @@ namespace Actors
             int nextMaxXp = (int)Math.Pow(Level + 1, 3);
 
             return nextMaxXp - Experience;
+        }
+
+        public void CheckLevelDown()
+        {
+            LevelDown();
         }
     }
 }

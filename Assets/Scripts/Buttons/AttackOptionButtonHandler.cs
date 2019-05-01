@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Controllers;
+﻿using Controllers;
+using UnityEngine;
 
 namespace Buttons
 {

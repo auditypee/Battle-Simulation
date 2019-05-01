@@ -21,6 +21,8 @@ namespace Actors
         [SerializeField] private int _defense;
         [SerializeField] private int _speed;
 
+        private readonly int MAX_LEVEL = 99;
+
         public bool IsDead => HitPoints <= 0;
 
         public string Name { get => _name; protected set => _name = value; }
@@ -103,23 +105,39 @@ namespace Actors
 
         protected void LevelUp(int n)
         {
-            double MaxHPAtLevelUp = (Math.Pow(n, 2) / 2) + 10;
-            double MaxManaAtLevelUp = (Math.Pow(n, 2) / 3) + 5;
-            double AttackAtLevelUp = (Math.Pow(n, 2) / 100) + n + 10;
-            double DefenseAtLevelUp = (Math.Pow(n, 2) / 100) + n + 5;
-            double SpeedAtLevelUp = (Math.Pow(n, 2) / 100) + n + 2;
+            if (Level != MAX_LEVEL)
+            {
+                double MaxHPAtLevelUp = (Math.Pow(n, 2) / 2) + 10;
+                double MaxManaAtLevelUp = (Math.Pow(n, 2) / 3) + 5;
+                double AttackAtLevelUp = (Math.Pow(n, 2) / 100) + n + 10;
+                double DefenseAtLevelUp = (Math.Pow(n, 2) / 100) + n + 5;
+                double SpeedAtLevelUp = (Math.Pow(n, 2) / 100) + n + 2;
 
-            MaxHP = (int)Math.Floor(MaxHPAtLevelUp);
-            HitPoints = MaxHP;
+                MaxHP = (int)Math.Floor(MaxHPAtLevelUp);
+                HitPoints = MaxHP;
 
-            MaxMana = (int)Math.Floor(MaxManaAtLevelUp);
-            Mana = MaxMana;
+                MaxMana = (int)Math.Floor(MaxManaAtLevelUp);
+                Mana = MaxMana;
 
-            Attack = (int)Math.Ceiling(AttackAtLevelUp);
-            Defense = (int)Math.Ceiling(DefenseAtLevelUp);
-            Speed = (int)Math.Floor(SpeedAtLevelUp);
+                Attack = (int)Math.Ceiling(AttackAtLevelUp);
+                Defense = (int)Math.Ceiling(DefenseAtLevelUp);
+                Speed = (int)Math.Floor(SpeedAtLevelUp);
 
-            Level = n;
+                Level = n;
+            }
+            
+        }
+
+        protected void LevelDown()
+        {
+            if (Level != 1)
+            {
+                Level -= 1;
+                LevelUp(Level);
+
+                Experience = (int)Math.Pow(Level, 3);
+            }
+            
         }
         #endregion
     }

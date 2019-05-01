@@ -7,7 +7,7 @@ Simulates a turn based battle in Unity. Much like the first few installments of 
 * [Setup](#setup)
 * [Functional Requirements](#functional-requirements)
 * [Pseudocode](#pseudocode)
-* [State Machine Idea] (#state-machine-idea)
+* [State Machine Idea](#state-machine-idea)
 
 ## Purpose
 Trying to utilize state machines, inheritance, SOLID design principles

@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using Controllers;
-using UnityEngine.Events;
+﻿using Controllers;
+using UnityEngine;
 
 namespace Buttons
 {
     public class EnemySelectButtonHandler : MonoBehaviour
     {
         public delegate void TargetSelected(GameObject target);
+
         public static event TargetSelected OnClickedTarget;
 
         public GameObject EnemyPrefab;
@@ -26,5 +26,4 @@ namespace Buttons
             EnemyPrefab.GetComponentInChildren<EnemyController>().Selector.SetActive(false);
         }
     }
-
 }
