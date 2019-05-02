@@ -21,7 +21,8 @@ C#, Unity
 ## Setup
 Working on it
 
-## Functional Requirements - what I want to implement
+## Functional Requirements
+#### What I want to implement
 - Player and Ally exist
 - Enemies exist
 - User has options during battle through player and ally
@@ -105,8 +106,8 @@ Repeat
 <img src="images/StateMachineIdea.png" width=300>
 
 ## Ideas to Implement
-Weapon and Armor equipping for player and ally
-Retuning stats for each actor
-Add "path" for encounters - user has to fight a series of predetermined battles
-Adding sprites, animation
-More ideas as project progresses...
+- Weapon and Armor equipping for player and ally
+- Retuning stats for each actor
+- Add "path" for encounters - user has to fight a series of predetermined battles
+- Adding sprites, animation
+- More ideas as project progresses...
