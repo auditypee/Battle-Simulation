@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4017942935568568399}
   - component: {fileID: 4227629646347579758}
   - component: {fileID: 1430678268520872146}
+  - component: {fileID: 309815013}
   m_Layer: 5
   m_Name: EnemyPresetButton
   m_TagString: Untagged
@@ -120,7 +121,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5653649839640300564}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 309815013}
+        m_MethodName: OnClick_PopulateEnemyFields
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &4227629646347579758
@@ -164,10 +176,33 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 25
+  m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &309815013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540090992380525582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7e5942baf9876b4e9a86dd554c7bb23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enemy:
+    _name: 
+    _level: 0
+    _experience: 0
+    _hitPoints: 0
+    _maxHP: 0
+    _mana: 0
+    _maxMana: 0
+    _attack: 0
+    _defense: 0
+    _speed: 0
 --- !u!1 &8770180171867242623
 GameObject:
   m_ObjectHideFlags: 0

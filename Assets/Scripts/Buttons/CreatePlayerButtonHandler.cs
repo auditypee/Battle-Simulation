@@ -13,7 +13,7 @@ namespace Buttons
 
         public void OnClick_PlayerCreate()
         {
-            string playerName = PlayerName.text;
+            string playerName = PlayerName.text.Trim();
 
             if (playerName != string.Empty)
             {
@@ -23,7 +23,9 @@ namespace Buttons
             }
             else
             {
-                Debug.Log("Input name");
+                Player player = new Player("Venet");
+
+                OnClickCreate?.Invoke(player);
             }
         }
     }

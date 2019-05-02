@@ -78,9 +78,9 @@ namespace Controllers
 
             CreatePlayer(new Player("Venet"), _position1l);
             //CreateAlly(new Ally("Ally"), _position2l);
-            CreateEnemy(new Enemy("Slime", 2, 5, 5, 5, 6, 3, 3), _position1r);
-            CreateEnemy(new Enemy("Orc", 5, 15, 8, 10, 1, 10, 10), _position2r);
-            CreateEnemy(new Enemy("Weakling", 1, 1, 1, 1, 1, 1, 1), _position3r);
+            CreateEnemy(new Enemy("Slime", 2, 5, 5, 6, 3, 3), _position1r);
+            CreateEnemy(new Enemy("Orc", 5, 15, 10, 1, 10, 10), _position2r);
+            CreateEnemy(new Enemy("Weakling", 1, 1, 1, 1, 1, 1), _position3r);
         }
     }
 }

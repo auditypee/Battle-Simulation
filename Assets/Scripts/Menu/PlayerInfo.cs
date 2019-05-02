@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Actors;
 
@@ -39,6 +34,16 @@ namespace Menu
                 "\nSpeed: " + _player.Speed;
 
             statsText.text = playerStats;
+        }
+
+        private void SetupWeaponsPanel()
+        {
+
+        }
+
+        private void SetupArmorPanel()
+        {
+
         }
 
         // TODO: - implement equipping weapons and armor
