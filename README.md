@@ -8,11 +8,12 @@ Simulates a turn based battle in Unity. Much like the first few installments of 
 * [Functional Requirements](#functional-requirements)
 * [Pseudocode](#pseudocode)
 * [State Machine Idea](#state-machine-idea)
+* [Ideas To Implement](#ideas-to-implement)
 
 ## Purpose
-Trying to utilize state machines, inheritance, SOLID design principles
+Trying to utilize state machines, inheritance, SOLID design principles.
 
-Also wanted to learn about the UnityEngine
+Also wanted to learn about the UnityEngine.
 
 ## Technologies Used
 C#, Unity
@@ -21,6 +22,7 @@ C#, Unity
 Working on it
 
 ## Functional Requirements
+#### What I want to implement
 - Player and Ally exist
 - Enemies exist
 - User has options during battle through player and ally
@@ -102,3 +104,10 @@ Repeat
 
 ## State Machine Idea
 <img src="images/StateMachineIdea.png" width=300>
+
+## Ideas to Implement
+- Weapon and Armor equipping for player and ally
+- Retuning stats for each actor
+- Add "path" for encounters - user has to fight a series of predetermined battles
+- Adding sprites, animation
+- More ideas as project progresses...
