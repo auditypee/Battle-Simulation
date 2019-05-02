@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Actors;
+using Buttons;
+using UnityEngine.SceneManagement;
 
 namespace Menu
 {
@@ -9,6 +13,21 @@ namespace Menu
         public static GameManager Instance = null;
 
         private UIController _uiScript;
+
+        private Player _player;
+        private List<Enemy> _enemies = new List<Enemy>();
+
+        public Player Player
+        {
+            get { return _player; }
+            private set { }
+        }
+
+        public List<Enemy> Enemies
+        {
+            get { return _enemies; }
+            private set { }
+        }
 
         private void Awake()
         {
@@ -19,17 +38,33 @@ namespace Menu
 
             DontDestroyOnLoad(gameObject);
             _uiScript = GetComponent<UIController>();
-        }
-        // Start is called before the first frame update
-        void Start()
-        {
+
             
         }
 
-        // Update is called once per frame
-        void Update()
+        private void LoadBattleScene()
         {
+            _player = _uiScript.Player;
+            _enemies = _uiScript.Enemies;
 
+            if (_player != null && _enemies.Any())
+            {
+                SceneManager.LoadScene("Battle");
+            }
+            else
+            {
+                Debug.Log("Missing");
+            }
+        }
+
+        private void OnEnable()
+        {
+            StartEncounterButtonHandler.OnClickLoadScene += LoadBattleScene;
+        }
+
+        private void OnDisable()
+        {
+            StartEncounterButtonHandler.OnClickLoadScene -= LoadBattleScene;
         }
     }
 }

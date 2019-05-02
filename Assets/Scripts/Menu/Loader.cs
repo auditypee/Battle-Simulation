@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Controllers
+namespace Menu
 {
     public class Loader : MonoBehaviour
     {
-        public GameObject battleManager;
+        public GameObject gameManager;
 
         private void Awake()
         {
-            if (BattleManager.instance == null)
-                Instantiate(battleManager);
+            if (GameManager.Instance == null)
+                Instantiate(gameManager);
         }
     }
 }
