@@ -113,6 +113,16 @@ namespace Controllers
             _listOfActions.RemoveAt(0);
         }
 
+        public bool AllyIsDead()
+        {
+            return _player.GetComponent<PlayerController>().Player.IsDead;
+        }
+
+        public bool PlayerIsDead()
+        {
+            return _ally.GetComponent<AllyController>().Ally.IsDead;
+        }
+
         public bool AllPlayersDead()
         {
             //_ally.GetComponent<AllyController>().Ally.IsDead;
@@ -121,18 +131,12 @@ namespace Controllers
 
         public bool AllEnemiesDead()
         {
-            return !Enemies.Any();
-        }
-
-        public int NumOfActors()
-        {
-            int num = Enemies.Count;
-            if (_player != null)
-                num++;
-            if (_ally != null)
-                num++;
-
-            return num;
+            foreach (var enemy in _enemies)
+            {
+                if (!enemy.GetComponent<EnemyController>().Enemy.IsDead)
+                    return false;
+            }
+            return true;
         }
 
         public void RemoveEnemy(GameObject enemy)

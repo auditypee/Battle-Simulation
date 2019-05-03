@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Controllers;
 using Buttons;
+using Actors;
 
 namespace States
 {
@@ -32,6 +33,7 @@ namespace States
 
     
     //--- BattleStates ---//
+    // player's turn
     public class PlayerTurnState : BattleState
     {
         private GameObject _playerObj;
@@ -71,7 +73,10 @@ namespace States
             _owner.CollectAction(action);
             _playerCon.CurrentPlayerState = PlayerController.PlayerState.WAIT;
 
-            _currentBattleState.ChangeState(new EnemyTurnState(_owner));
+            if (_owner.AllyIsDead() || _owner.Ally == null)
+                _currentBattleState.ChangeState(new EnemyTurnState(_owner));
+            else
+                _currentBattleState.ChangeState(new AllyTurnState(_owner));
         }
 
         protected override void AddListeners()
@@ -92,18 +97,17 @@ namespace States
 
         public override void Enter()
         {
-            AddListener();
-        }
+            _owner.ActionsContainer.SetActive(true);
 
-        public override void Execute()
-        {
-            //throw new NotImplementedException();
+            base.Enter();
         }
 
         public override void Exit()
         {
+            _owner.EnemySelectPanel.SetActive(false);
             _owner.ActionsContainer.SetActive(false);
-            RemoveListener();
+
+            base.Exit();
         }
 
         public void TakeAllyAction(GameObject target)
@@ -120,14 +124,17 @@ namespace States
             CollectAction(action);
             CurrentBattleState = TurnState.ENEMYTURN;
             */
+            var s = target.GetComponent<EnemyController>().Enemy.Name;
+            Debug.Log(s);
+
+            _currentBattleState.ChangeState(new EnemyTurnState(_owner));
         }
 
-        private void AddListener()
+        protected override void AddListeners()
         {
             EnemySelectButtonHandler.OnClickedTarget += TakeAllyAction;
         }
-
-        private void RemoveListener()
+        protected override void RemoveListeners()
         {
             EnemySelectButtonHandler.OnClickedTarget -= TakeAllyAction;
         }
@@ -174,19 +181,20 @@ namespace States
         public override void Enter()
         {
             _owner.ActionsContainer.SetActive(false);
-            
         }
 
         public override void Execute()
         {
             if (!_owner.ListOfActions.Any())
+            {
                 _currentBattleState.ChangeState(new PlayerTurnState(_owner));
-
+            }
             else
             {
-            TakeActions();
+                TakeActions();
                 _currentBattleState.ChangeState(new PerformActionState(_owner));
             }
+                
         }
 
         #region Converting HandleTurn to an Action
@@ -234,30 +242,35 @@ namespace States
         
         public override void Execute()
         {
-            _currentBattleState.ChangeState(new ResolveTurnsState(_owner));
-
             if (_owner.AllEnemiesDead())
                 _currentBattleState.ChangeState(new EndBattleState(_owner));
 
-            if (_owner.AllPlayersDead())
+            else if (_owner.AllPlayersDead())
                 _currentBattleState.ChangeState(new GameOverState(_owner));
+
+            else
+                _currentBattleState.ChangeState(new ResolveTurnsState(_owner));
         }
 
         public override void Exit()
         {
-            //_owner.PopTop();
         }
     }
 
     public class EndBattleState : BattleState
     {
+        
+
         public EndBattleState(BattleManager owner) : base(owner)
         {
+            
         }
 
         public override void Enter()
         {
             Debug.Log("A winner is you!");
+
+            
         }
 
         public override void Execute()

@@ -37,8 +37,7 @@ namespace Controllers
 
             base.Start();
         }
-
-        // TODO: - shorten this to be more in line with PlayerController
+        
         protected override void Update()
         {
             _changeHealthBar.SetSize((float)Enemy.HitPoints / Enemy.MaxHP);
@@ -66,8 +65,9 @@ namespace Controllers
 
                 case EnemyState.DEAD:
                     _bm.RemoveActorAction(gameObject);
-                    _bm.RemoveEnemy(gameObject);
-                    Destroy(gameObject);
+                    //_bm.RemoveEnemy(gameObject);
+                    //Destroy(gameObject);
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
                     break;
             }
         }

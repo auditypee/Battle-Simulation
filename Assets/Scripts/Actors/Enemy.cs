@@ -24,6 +24,11 @@ namespace Actors
         {
             LevelUp(level);
         }
+
+        public int GiveExperience()
+        {
+            return Experience;
+        }
     }
 }
 

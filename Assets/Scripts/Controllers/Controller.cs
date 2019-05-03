@@ -18,7 +18,7 @@ namespace Controllers
 
         protected Vector2 _startPosition;
         protected static bool _actionStarted = false;
-        protected static float _animSpeed = 30f;
+        protected static float _animSpeed = 50f;
 
         [SerializeField] protected GameObject HealthBar;
         protected HealthBar _changeHealthBar;
@@ -34,7 +34,6 @@ namespace Controllers
 
         protected abstract void CreateHealthBar();
         
-
         // update for the state machine
         protected abstract void Update();
 
@@ -55,9 +54,9 @@ namespace Controllers
             int attackerATK = attacker.Attack;
             int defenderDEF = defender.Defense;
             int attackerLVL = attacker.Level;
+            int defenderLVL = defender.Level;
 
-            int damage = (((2 * attackerLVL) / 5 + 2) * (attackerATK / defenderDEF)) / 2 + 2;
-
+            int damage = (((2 * attackerLVL) / 5 + 2) * (attackerATK / defenderDEF) * 50) / 50 + 2;
             return damage;
         }
 
