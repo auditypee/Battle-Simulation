@@ -45,10 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _listOfActions: []
-  ActionsContainer: {fileID: 8731320468551208281, guid: daffbf47b4536f7448b7103ba6d80100,
-    type: 3}
-  EnemySelectPanel: {fileID: 3474476010605296543, guid: 35786c0def7194a4b84fee9e08ef2223,
-    type: 3}
+  ActionsContainer: {fileID: 0}
+  EnemySelectPanel: {fileID: 0}
   TargetSpacer: {fileID: 0}
   TargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
     type: 3}
@@ -70,6 +68,9 @@ MonoBehaviour:
     type: 3}
   InstEnemy: {fileID: 1870240465419655090, guid: 0d5d5944b80e08244aed9508ec694d47,
     type: 3}
+  InstTargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
+    type: 3}
+  TargetSpacer: {fileID: 0}
   Player: {fileID: 0}
   Ally: {fileID: 0}
   Enemies: []

@@ -13,13 +13,14 @@ namespace Menu
         public static GameManager Instance = null;
 
         private UIController _uiScript;
-
-        private Player _player;
+        private Ally _ally;
         private List<Enemy> _enemies = new List<Enemy>();
 
-        public Player Player
+        public Player Player { get; set; }
+
+        public Ally Ally
         {
-            get { return _player; }
+            get { return _ally; }
             private set { }
         }
 
@@ -38,16 +39,20 @@ namespace Menu
 
             DontDestroyOnLoad(gameObject);
             _uiScript = GetComponent<UIController>();
+        }
 
-            
+        private void Update()
+        {
+            if (Input.GetKey("escape"))
+                Application.Quit();
         }
 
         private void LoadBattleScene()
         {
-            _player = _uiScript.Player;
+            Player = _uiScript.Player;
             _enemies = _uiScript.Enemies;
 
-            if (_player != null && _enemies.Any())
+            if (Player != null && _enemies.Any())
             {
                 SceneManager.LoadScene("Battle");
             }

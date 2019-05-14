@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Actors;
 using States;
+using Menu;
+using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
@@ -17,6 +19,8 @@ namespace Controllers
         private GameObject _player;
         private GameObject _ally;
         private List<GameObject> _enemies;
+
+        private GameManager _gameManager = GameManager.Instance;
 
         public static BattleManager Instance = null;
 
@@ -74,25 +78,6 @@ namespace Controllers
         {
             CurrentBattleState.Update();
         }
-        
-        public void CreateEnemyButtons()
-        {
-            foreach (Transform child in TargetSpacer)
-                Destroy(child.gameObject);
-            foreach (GameObject enemy in _enemies)
-            {
-                // create buttons that contain the data for every enemy in the battle
-                GameObject newButton = Instantiate(TargetButton) as GameObject;
-                EnemySelectButtonHandler enemyButtonHandler = newButton.GetComponent<EnemySelectButtonHandler>();
-
-                Text buttonText = newButton.GetComponentInChildren<Text>();
-                buttonText.text = enemy.GetComponent<EnemyController>().Enemy.Name;
-
-                enemyButtonHandler.EnemyPrefab = enemy;
-                newButton.transform.SetParent(TargetSpacer);
-            }
-        }
-        
 
         // collects actions from actors and sorts by speed
         public void CollectAction(HandleTurn action)
@@ -155,6 +140,17 @@ namespace Controllers
                 return !_player.GetComponent<PlayerController>().Player.IsDead ? _player : _ally; // if player isn't dead
             else
                 return !_ally.GetComponent<AllyController>().Ally.IsDead ? _ally : _player; // if ally isn't dead
+        }
+
+        public void PlayerWon()
+        {
+            _gameManager.Player = _player.GetComponent<PlayerController>().Player;
+            SceneManager.LoadScene("SetupBattle");
+        }
+
+        public void PlayerLost()
+        {
+
         }
     }
 }

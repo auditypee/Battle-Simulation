@@ -99,11 +99,13 @@ namespace Menu
         private void OnEnable()
         {
             EnemyPresetButtonHandler.OnClickPopulate += PresetFields;
+            ResetCreateEnemyButtonHandler.OnClickReset += ResetInputs;
         }
 
         private void OnDisable()
         {
             EnemyPresetButtonHandler.OnClickPopulate -= PresetFields;
+            ResetCreateEnemyButtonHandler.OnClickReset -= ResetInputs;
         }
     }
 }

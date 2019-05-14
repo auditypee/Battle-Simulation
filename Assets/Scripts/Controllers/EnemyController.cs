@@ -12,7 +12,7 @@ namespace Controllers
     {
         public enum EnemyState
         {
-            CHOOSEACTION,
+            SELECTING,
             WAIT,
             ACTION,
             DEAD
@@ -26,6 +26,8 @@ namespace Controllers
 
         public GameObject Selector;
 
+        public GameObject TargetButton;
+
         public bool TurnFinished = false;
 
         // Start is called before the first frame update
@@ -33,7 +35,7 @@ namespace Controllers
         {
             Selector.SetActive(false);
 
-            CurrentEnemyState = EnemyState.CHOOSEACTION;
+            CurrentEnemyState = EnemyState.SELECTING;
 
             base.Start();
         }
@@ -46,7 +48,7 @@ namespace Controllers
 
             switch (CurrentEnemyState)
             {
-                case EnemyState.CHOOSEACTION:
+                case EnemyState.SELECTING:
 
                     break;
 
@@ -56,7 +58,7 @@ namespace Controllers
 
                 case EnemyState.ACTION:
                     if (PlayerToAttack == null)
-                        CurrentEnemyState = EnemyState.CHOOSEACTION;
+                        CurrentEnemyState = EnemyState.SELECTING;
                     else
                         StartCoroutine(TimeForAction());
 
@@ -65,8 +67,8 @@ namespace Controllers
 
                 case EnemyState.DEAD:
                     _bm.RemoveActorAction(gameObject);
-                    //_bm.RemoveEnemy(gameObject);
-                    //Destroy(gameObject);
+                    // makes this enemy unselectable
+                    Destroy(TargetButton);
                     gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
                     break;
             }

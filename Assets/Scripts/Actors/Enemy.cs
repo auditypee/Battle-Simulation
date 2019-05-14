@@ -20,11 +20,6 @@ namespace Actors
             Speed = speed;
         }
 
-        public void ChangeLevel(int level)
-        {
-            LevelUp(level);
-        }
-
         public int GiveExperience()
         {
             return Experience;

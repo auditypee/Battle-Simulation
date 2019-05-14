@@ -58,7 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerInfoPanel: {fileID: 8970301968863392645, guid: 7a7b26bb114305f4f976bd9b3c9b7e45,
     type: 3}
-  PlayerPanel: {fileID: 9205982442069296945, guid: b6793e70fb2cf8c46b3fd94d25337c95,
+  PlayerPanel: {fileID: 2150180183402075268, guid: 2f9cc7417c2c6af47ac5610c37d14e25,
     type: 3}
-  EnemiesPanel: {fileID: 6286791681363718640, guid: 24da30e67009b6f48b1d81ce9bfe7466,
+  EnemiesPanel: {fileID: 4996963610693406582, guid: 6fa5b4e48e12cb942a31719986e4746e,
     type: 3}

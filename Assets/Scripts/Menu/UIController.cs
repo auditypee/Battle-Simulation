@@ -25,18 +25,21 @@ namespace Menu
         private readonly int MAX_ENEMIES = 4;
 
         public GameObject PlayerInfoPanel;
-        public GameObject PlayerPanel;
-
-        public GameObject EnemiesPanel;
 
         private GameObject _playerInfoPanel;
+        private GameObject _playerPanel;
+
+        private GameObject _enemiesPanel;
 
         private PlayerInfo _playerInfo;
         private EnemyInfo _enemyInfo;
 
         private void Awake()
         {
-            _enemyInfo = EnemiesPanel.GetComponent<EnemyInfo>();
+            _playerPanel = GameObject.Find("PlayerPanel");
+            _enemiesPanel = GameObject.Find("EnemiesPanel");
+
+            _enemyInfo = _enemiesPanel.GetComponent<EnemyInfo>();
         }
 
         // creates the player and shows their stats
@@ -47,7 +50,7 @@ namespace Menu
             if (_playerInfoPanel == null)
             {
                 _playerInfoPanel = Instantiate(PlayerInfoPanel) as GameObject;
-                _playerInfoPanel.transform.SetParent(PlayerPanel.transform, false);
+                _playerInfoPanel.transform.SetParent(_playerPanel.transform, false);
                 _playerInfo = _playerInfoPanel.GetComponent<PlayerInfo>();
 
                 _playerInfo.SetupPanels(_player);
@@ -60,13 +63,13 @@ namespace Menu
 
         private void PlayerLevelUp()
         {
-            _player.CheckLevelUp(_player.ExpNeededToLvlUp());
+            _player.NextLevel();
             _playerInfo.UpdateStats(_player);
         }
 
-        private void PlayerLevelDown()
+        private void PlayerSetLevel(int n)
         {
-            _player.CheckLevelDown();
+            _player.SetLvl(n);
             _playerInfo.UpdateStats(_player);
         }
 
@@ -88,8 +91,8 @@ namespace Menu
         {
             CreatePlayerButtonHandler.OnClickCreate += CreatePlayer;
             LvlUpPlayerButtonHandler.OnClickLevelUp += PlayerLevelUp;
-            LvlUpPlayerButtonHandler.OnClickLevelDown += PlayerLevelDown;
-            CreateEnemyButtonHandler.OnClickCreate += CreateEnemy;
+            LvlUpPlayerButtonHandler.OnClickLevelSet += PlayerSetLevel;
+            ResetCreateEnemyButtonHandler.OnClickCreate += CreateEnemy;
             EnemyPortraitHandler.OnClickDelete += DeleteEnemy;
         }
 
@@ -97,8 +100,8 @@ namespace Menu
         {
             CreatePlayerButtonHandler.OnClickCreate -= CreatePlayer;
             LvlUpPlayerButtonHandler.OnClickLevelUp -= PlayerLevelUp;
-            LvlUpPlayerButtonHandler.OnClickLevelDown -= PlayerLevelDown;
-            CreateEnemyButtonHandler.OnClickCreate -= CreateEnemy;
+            LvlUpPlayerButtonHandler.OnClickLevelSet -= PlayerSetLevel;
+            ResetCreateEnemyButtonHandler.OnClickCreate -= CreateEnemy;
             EnemyPortraitHandler.OnClickDelete -= DeleteEnemy;
         }
     }

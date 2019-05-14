@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using Actors;
+using Buttons;
 using Menu;
 
 namespace Controllers
@@ -25,6 +27,9 @@ namespace Controllers
         public GameObject InstAlly;
         public GameObject InstEnemy;
 
+        public GameObject InstTargetButton;
+        public Transform TargetSpacer;
+
         [HideInInspector] public GameObject Player;
         [HideInInspector] public GameObject Ally;
         [HideInInspector] public List<GameObject> Enemies;
@@ -34,8 +39,8 @@ namespace Controllers
 
         private void Awake()
         {
-            //_player = GameManager.Instance.Player;
-            //_enemies = GameManager.Instance.Enemies;
+            _player = GameManager.Instance.Player;
+            _enemies = GameManager.Instance.Enemies;
         }
 
         private void InitPositions()
@@ -87,12 +92,26 @@ namespace Controllers
 
         private void CreateEnemy(Enemy enemy, Vector2 position)
         {
+            // instantiates the enemy gameobject
             GameObject newEnemy = Instantiate(InstEnemy) as GameObject;
-
-            // position of enemy
             newEnemy.transform.position = position;
-            // values of the enemy
-            newEnemy.GetComponent<EnemyController>().Enemy = enemy;
+
+            // instantiates the button for that enemy
+            GameObject newEnemyTargetBtn = Instantiate(InstTargetButton) as GameObject;
+            EnemySelectButtonHandler enemyButtonHandler = newEnemyTargetBtn.GetComponent<EnemySelectButtonHandler>();
+            // sets the name for the target button
+            Text buttonText = newEnemyTargetBtn.GetComponentInChildren<Text>();
+            buttonText.text = enemy.Name;
+            // sets the enemy to that target button
+            enemyButtonHandler.EnemyPrefab = newEnemy;
+            newEnemyTargetBtn.transform.SetParent(TargetSpacer);
+
+            // gives the gameobject its own enemy data
+            EnemyController newEnemyController = newEnemy.GetComponent<EnemyController>();
+            newEnemyController.Enemy = enemy;
+            // gives the gameobject's enemycontroller access to the instantiated target button
+            newEnemyController.TargetButton = newEnemyTargetBtn;
+            
             Enemies.Add(newEnemy);
         }
 
@@ -100,18 +119,18 @@ namespace Controllers
         {
             InitPositions();
 
-            //CreatePlayer(_player, _position1l);
-            //int i = 0;
-            //foreach (var enemy in _enemies)
-            //{
-            //    CreateEnemy(enemy, _positionsR[i++]);
-            //}
+            CreatePlayer(_player, _position1l);
+            int i = 0;
+            foreach (var enemy in _enemies)
+            {
+                CreateEnemy(enemy, _positionsR[i++]);
+            }
 
-            CreatePlayer(new Player("Venet"), _position1l);
-            //CreateAlly(new Ally("Ally"), _position2l);
-            CreateEnemy(new Enemy("Slime", 2, 5000, 5, 6, 3, 3), _position1r);
-            CreateEnemy(new Enemy("Orc", 5, 15, 10, 1, 10, 10), _position2r);
-            //CreateEnemy(new Enemy("Weakling", 1, 1, 1, 1, 1, 1), _position3r);
+            //CreatePlayer(new Player("Venet"), _position1l);
+            ////CreateAlly(new Ally("Ally"), _position2l);
+            //CreateEnemy(new Enemy("Slime", 2, 50, 5, 6, 3, 3), _position1r);
+            //CreateEnemy(new Enemy("Orc", 5, 15, 10, 1, 10, 10), _position2r);
+            ////CreateEnemy(new Enemy("Weakling", 1, 1, 1, 1, 1, 1), _position3r);
         }
     }
 }

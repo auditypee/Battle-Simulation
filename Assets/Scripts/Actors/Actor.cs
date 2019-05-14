@@ -11,8 +11,6 @@ namespace Actors
     {
         #region Properties
         [SerializeField] private string _name;
-        [SerializeField] private int _level;
-        [SerializeField] private int _experience;
         [SerializeField] private int _hitPoints;
         [SerializeField] private int _maxHP;
         [SerializeField] private int _mana;
@@ -20,6 +18,11 @@ namespace Actors
         [SerializeField] private int _attack;
         [SerializeField] private int _defense;
         [SerializeField] private int _speed;
+        
+        [SerializeField] private int _level;
+        [SerializeField] private int _experience;
+        private int _nextLvlUp;
+        private readonly float _nextLvlModifier = 1.15f;
 
         private readonly int MAX_LEVEL = 99;
 
@@ -35,6 +38,7 @@ namespace Actors
         public int Attack { get => _attack; protected set => _attack = value; }
         public int Defense { get => _defense; protected set => _defense = value; }
         public int Speed { get => _speed; protected set => _speed = value; }
+        public int NextLvlUp { get => _nextLvlUp; protected set => _nextLvlUp = value; }
         #endregion
 
         // empty constructor for created enemies
@@ -58,6 +62,8 @@ namespace Actors
             Attack = 10;
             Defense = 5;
             Speed = 5;
+
+            _nextLvlUp = 10;
         }
 
         #region Setters
@@ -101,43 +107,65 @@ namespace Actors
         protected void GainExperience(int expGained)
         {
             Experience += expGained;
-        }
-
-        protected void LevelUp(int n)
-        {
             if (Level != MAX_LEVEL)
             {
-                double MaxHPAtLevelUp = (Math.Pow(n, 2) / 2) + 10;
-                double MaxManaAtLevelUp = (Math.Pow(n, 2) / 3) + 5;
-                double AttackAtLevelUp = (Math.Pow(n, 2) / 100) + n + 10;
-                double DefenseAtLevelUp = (Math.Pow(n, 2) / 100) + n + 5;
-                double SpeedAtLevelUp = (Math.Pow(n, 2) / 100) + n + 2;
+                while (Experience >= _nextLvlUp)
+                {
+                    LevelUp();
 
-                MaxHP = (int)Math.Floor(MaxHPAtLevelUp);
-                HitPoints = MaxHP;
+                    Debug.Log("Congratulations! You are now level " + Level);
 
-                MaxMana = (int)Math.Floor(MaxManaAtLevelUp);
-                Mana = MaxMana;
+                    //float t = Mathf.Pow(_nextLvlModifier, Level);
+                    _nextLvlUp = (int)Mathf.Floor(_nextLvlUp * _nextLvlModifier + 8);
 
-                Attack = (int)Math.Ceiling(AttackAtLevelUp);
-                Defense = (int)Math.Ceiling(DefenseAtLevelUp);
-                Speed = (int)Math.Floor(SpeedAtLevelUp);
-
-                Level = n;
+                    Debug.Log("Next level up at " + _nextLvlUp);
+                }
             }
-            
         }
 
+        private void LevelUp()
+        {
+            Level++;
+            int n = Level;
+
+            double MaxHPAtLevelUp = (Math.Pow(n, 2) / 2) + 10;
+            double MaxManaAtLevelUp = (Math.Pow(n, 2) / 3) + 5;
+            double AttackAtLevelUp = (Math.Pow(n, 2) / 100) + n + 10;
+            double DefenseAtLevelUp = (Math.Pow(n, 2) / 100) + n + 5;
+            double SpeedAtLevelUp = (Math.Pow(n, 2) / 100) + n + 2;
+
+            MaxHP = (int)Math.Floor(MaxHPAtLevelUp);
+            HitPoints = MaxHP;
+
+            MaxMana = (int)Math.Floor(MaxManaAtLevelUp);
+            Mana = MaxMana;
+
+            Attack = (int)Math.Ceiling(AttackAtLevelUp);
+            Defense = (int)Math.Ceiling(DefenseAtLevelUp);
+            Speed = (int)Math.Floor(SpeedAtLevelUp);
+        }
+        
         protected void LevelDown()
         {
             if (Level != 1)
             {
-                Level -= 1;
-                LevelUp(Level);
+                Level -= 2;
+                LevelUp();
 
-                Experience = (int)Math.Pow(Level, 3);
+                Experience = (int)Mathf.Floor((_nextLvlUp - 8) / 2);
             }
+        }
+
+        protected void SetLevel(int level)
+        {
+            Level = 1;
+            Experience = 0;
+            _nextLvlUp = 10;
             
+            while (Level != level)
+            {
+                GainExperience(_nextLvlUp - Experience);
+            }
         }
         #endregion
     }

@@ -269,8 +269,8 @@ namespace States
         public override void Enter()
         {
             Debug.Log("A winner is you!");
-
-            
+            new WaitForEndOfFrame();
+            _owner.PlayerWon();
         }
 
         public override void Execute()

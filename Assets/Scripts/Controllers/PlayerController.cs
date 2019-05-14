@@ -47,7 +47,7 @@ namespace Controllers
                     break;
 
                 case PlayerState.ACTION:
-                    if (EnemyToAttack == null)
+                    if (EnemyToAttack.GetComponent<EnemyController>().Enemy.IsDead)
                         CurrentPlayerState = PlayerState.SELECTING;
                     else
                         StartCoroutine(TimeForAction());
@@ -93,10 +93,22 @@ namespace Controllers
 
             _actionStarted = false;
 
+            if (EnemyToAttack.GetComponent<EnemyController>().Enemy.IsDead)
+                CollectExperience();
+
             if (Player.IsDead)
                 CurrentPlayerState = PlayerState.DEAD;
             else
                 CurrentPlayerState = PlayerState.SELECTING;
+        }
+
+        private void CollectExperience()
+        {
+            Enemy targetEnemy = EnemyToAttack.GetComponent<EnemyController>().Enemy;
+            int exp = targetEnemy.GiveExperience();
+            Debug.Log("Player received " + exp + " exp from " + targetEnemy.Name);
+
+            Player.GainExp(exp);
         }
 
         protected override void EngageTarget(GameObject target)

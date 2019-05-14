@@ -189,9 +189,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2737748384142593279, guid: e496acaa1761985478d6648f4175fefa,
         type: 3}
-      propertyPath: TargetSpacer
+      propertyPath: ActionsContainer
       value: 
-      objectReference: {fileID: 1811649681}
+      objectReference: {fileID: 1248908236}
     - target: {fileID: 2737748384142593279, guid: e496acaa1761985478d6648f4175fefa,
         type: 3}
       propertyPath: EnemySelectPanel
@@ -199,9 +199,14 @@ PrefabInstance:
       objectReference: {fileID: 207985958}
     - target: {fileID: 2737748384142593279, guid: e496acaa1761985478d6648f4175fefa,
         type: 3}
-      propertyPath: ActionsContainer
+      propertyPath: TargetSpacer
       value: 
-      objectReference: {fileID: 1248908236}
+      objectReference: {fileID: 1811649681}
+    - target: {fileID: 2737748384142593273, guid: e496acaa1761985478d6648f4175fefa,
+        type: 3}
+      propertyPath: TargetSpacer
+      value: 
+      objectReference: {fileID: 1811649681}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e496acaa1761985478d6648f4175fefa, type: 3}
 --- !u!1 &207985958
