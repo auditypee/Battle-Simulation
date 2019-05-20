@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b343228f0b02548925e2ba607a4174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleCreationUI: {fileID: 8104671709947210152, guid: 3d9b552dd1e4adf44af369ad5f56680b,
+    type: 3}
 --- !u!114 &1233216306496920397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,8 +59,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerInfoPanel: {fileID: 8970301968863392645, guid: 7a7b26bb114305f4f976bd9b3c9b7e45,
-    type: 3}
-  PlayerPanel: {fileID: 2150180183402075268, guid: 2f9cc7417c2c6af47ac5610c37d14e25,
-    type: 3}
-  EnemiesPanel: {fileID: 4996963610693406582, guid: 6fa5b4e48e12cb942a31719986e4746e,
     type: 3}

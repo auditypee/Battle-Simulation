@@ -12,18 +12,24 @@ namespace Menu
     {
         public static GameManager Instance = null;
 
+        public GameObject BattleCreationUI;
+
         private UIController _uiScript;
+
+        private Player _player;
         private Ally _ally;
         private List<Enemy> _enemies = new List<Enemy>();
 
-        public Player Player { get; set; }
-
+        public Player Player
+        {
+            get { return _player; }
+            private set { }
+        }
         public Ally Ally
         {
             get { return _ally; }
             private set { }
         }
-
         public List<Enemy> Enemies
         {
             get { return _enemies; }
@@ -39,17 +45,33 @@ namespace Menu
 
             DontDestroyOnLoad(gameObject);
             _uiScript = GetComponent<UIController>();
+
+            GameObject ui = Instantiate(BattleCreationUI) as GameObject;
         }
 
         private void Update()
         {
             if (Input.GetKey("escape"))
+            {
+                Debug.Log("Escape key pressed");
                 Application.Quit();
+            }
+        }
+
+        public void SetupBattleSetup(Player player)
+        {
+            _player = player;
+            //_ally = ally;
+
+            GameObject ui = Instantiate(BattleCreationUI) as GameObject;
+            Debug.Log(ui.name);
+
+            Debug.Log("Back to Thing");
         }
 
         private void LoadBattleScene()
         {
-            Player = _uiScript.Player;
+            _player = _uiScript.Player;
             _enemies = _uiScript.Enemies;
 
             if (Player != null && _enemies.Any())

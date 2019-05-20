@@ -144,8 +144,9 @@ namespace Controllers
 
         public void PlayerWon()
         {
-            _gameManager.Player = _player.GetComponent<PlayerController>().Player;
             SceneManager.LoadScene("SetupBattle");
+            Debug.Log("Left BattleScene");
+            _gameManager.SetupBattleSetup(_player.GetComponent<PlayerController>().Player);
         }
 
         public void PlayerLost()

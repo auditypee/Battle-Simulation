@@ -19,7 +19,7 @@ namespace Controllers
             DEAD
         }
 
-        public Ally Ally;
+        public Ally Ally = new Ally("Name");
 
         protected override void Start()
         {
