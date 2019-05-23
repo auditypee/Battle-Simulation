@@ -26,7 +26,7 @@ namespace Controllers
         // initiate fields
         protected virtual void Start()
         {
-            _bm = BattleManager.Instance;
+            _bm = new BattleManager();
             _startPosition = transform.position;
 
             CreateHealthBar();

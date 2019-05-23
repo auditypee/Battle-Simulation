@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1233216306496920387}
   - component: {fileID: 1233216306496920396}
-  - component: {fileID: 1233216306496920397}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,19 +43,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b343228f0b02548925e2ba607a4174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BattleCreationUI: {fileID: 8104671709947210152, guid: 3d9b552dd1e4adf44af369ad5f56680b,
-    type: 3}
---- !u!114 &1233216306496920397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233216306496920398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d8f30869c24cbe4993f5d4a32874e1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerInfoPanel: {fileID: 8970301968863392645, guid: 7a7b26bb114305f4f976bd9b3c9b7e45,
-    type: 3}

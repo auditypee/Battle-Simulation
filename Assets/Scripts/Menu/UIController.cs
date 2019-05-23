@@ -2,6 +2,8 @@
 using UnityEngine;
 using Actors;
 using Buttons;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace Menu
 {
@@ -25,6 +27,7 @@ namespace Menu
         private readonly int MAX_ENEMIES = 4;
 
         public GameObject PlayerInfoPanel;
+        public GameObject BattleCreationUI;
 
         private GameObject _playerInfoPanel;
         private GameObject _playerPanel;
@@ -36,10 +39,17 @@ namespace Menu
 
         private void Awake()
         {
+            GameObject ui = Instantiate(BattleCreationUI) as GameObject;
+
             _playerPanel = GameObject.Find("PlayerPanel");
             _enemiesPanel = GameObject.Find("EnemiesPanel");
 
             _enemyInfo = _enemiesPanel.GetComponent<EnemyInfo>();
+
+            if (GameManager.Instance.Player != null)
+            {
+                CreatePlayer(GameManager.Instance.Player);
+            }
         }
 
         // creates the player and shows their stats
@@ -87,6 +97,23 @@ namespace Menu
             _enemies.Remove(enemy);
         }
 
+        private void LoadBattleScene()
+        {
+            if (_player != null && _enemies.Any())
+            {
+                GameManager.Instance.Player = Player;
+                GameManager.Instance.Enemies = Enemies;
+
+                Debug.Log(GameManager.Instance.Player.Name + " Created");
+
+                SceneManager.LoadScene("Battle");
+            }
+            else
+            {
+                Debug.Log("Missing");
+            }
+        }
+
         private void OnEnable()
         {
             CreatePlayerButtonHandler.OnClickCreate += CreatePlayer;
@@ -94,6 +121,7 @@ namespace Menu
             LvlUpPlayerButtonHandler.OnClickLevelSet += PlayerSetLevel;
             ResetCreateEnemyButtonHandler.OnClickCreate += CreateEnemy;
             EnemyPortraitHandler.OnClickDelete += DeleteEnemy;
+            StartEncounterButtonHandler.OnClickLoadScene += LoadBattleScene;
         }
 
         private void OnDisable()
@@ -103,6 +131,7 @@ namespace Menu
             LvlUpPlayerButtonHandler.OnClickLevelSet -= PlayerSetLevel;
             ResetCreateEnemyButtonHandler.OnClickCreate -= CreateEnemy;
             EnemyPortraitHandler.OnClickDelete -= DeleteEnemy;
+            StartEncounterButtonHandler.OnClickLoadScene -= LoadBattleScene;
         }
     }
 }

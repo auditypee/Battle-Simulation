@@ -5,9 +5,12 @@ namespace Buttons
 {
     public class AttackOptionButtonHandler : MonoBehaviour
     {
+        public delegate void ToggleEnemyPanel();
+        public static event ToggleEnemyPanel OnClickToggle;
+
         public void OnClick_ShowEnemySelection()
         {
-            BattleManager.Instance.EnemySelectPanel.SetActive(!BattleManager.Instance.EnemySelectPanel.activeSelf);
+            OnClickToggle?.Invoke();
         }
     }
 }

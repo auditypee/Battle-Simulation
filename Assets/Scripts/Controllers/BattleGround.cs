@@ -39,6 +39,7 @@ namespace Controllers
 
         private void Awake()
         {
+            Debug.Log(GameManager.Instance.Player.Name);
             _player = GameManager.Instance.Player;
             _enemies = GameManager.Instance.Enemies;
         }

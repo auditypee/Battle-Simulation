@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2737748384142593278}
-  - component: {fileID: 2737748384142593279}
   - component: {fileID: 2737748384142593273}
+  - component: {fileID: 2737748384142593279}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -32,24 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2737748384142593279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2737748384142593276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bc7e4e975611dd4d89dff71b3fd4c57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _listOfActions: []
-  ActionsContainer: {fileID: 0}
-  EnemySelectPanel: {fileID: 0}
-  TargetSpacer: {fileID: 0}
-  TargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
-    type: 3}
 --- !u!114 &2737748384142593273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,3 +56,21 @@ MonoBehaviour:
   Player: {fileID: 0}
   Ally: {fileID: 0}
   Enemies: []
+--- !u!114 &2737748384142593279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2737748384142593276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7e4e975611dd4d89dff71b3fd4c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _listOfActions: []
+  ActionsContainer: {fileID: 0}
+  EnemySelectPanel: {fileID: 0}
+  TargetSpacer: {fileID: 0}
+  TargetButton: {fileID: 5590154089459873916, guid: 5dbe83eb295169c46bdbcea6820971c3,
+    type: 3}

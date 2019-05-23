@@ -22,8 +22,6 @@ namespace Controllers
 
         private GameManager _gameManager = GameManager.Instance;
 
-        public static BattleManager Instance = null;
-
         public GameObject Player
         {
             get { return _player; }
@@ -53,13 +51,6 @@ namespace Controllers
         
         private void Awake()
         {
-            if (Instance == null)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-
-            DontDestroyOnLoad(gameObject);
-
             battleGround = GetComponent<BattleGround>();
             battleGround.SetupScene();
 
@@ -70,6 +61,7 @@ namespace Controllers
 
         private void Start()
         {
+            
             EnemySelectPanel.SetActive(false);
             CurrentBattleState.ChangeState(new PlayerTurnState(this));
         }
@@ -152,6 +144,21 @@ namespace Controllers
         public void PlayerLost()
         {
 
+        }
+
+        private void ToggleEnemyPanel()
+        {
+            EnemySelectPanel.SetActive(!EnemySelectPanel.activeSelf);
+        }
+
+        private void OnEnable()
+        {
+            AttackOptionButtonHandler.OnClickToggle += ToggleEnemyPanel;
+        }
+
+        private void OnDisable()
+        {
+            AttackOptionButtonHandler.OnClickToggle -= ToggleEnemyPanel;
         }
     }
 }
